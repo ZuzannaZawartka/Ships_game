@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .kwadracik {
+            width: 30px;
+            height: 30px;
+            border: 0.2px solid black;
+            margin: 0.5px;
+            float: left;
+
+        }
+
+        .kwadracik:nth-child(10n+1) {
+            clear: both;
+        }
+
+        #box {
+            position: absolute;
+            left: 300px;
+            top: 50px;
+
+        }
+
+        #box1 {
+            max-width: 250px;
+            display: flex;
+            justify-content: flex-start;
+            flex-direction: column;
+        }
+
+        #box1 {
+            max-width: 250px;
+            display: flex;
+            justify-content: flex-start;
+            flex-direction: column;
+        }
+
+        .statek {
+            width: 30px;
+            height: 30px;
+            border: 1px solid black;
+            margin: 1px;
+            float: left;
+        }
+
+        .statek_click {
+            background-color: blue !important;
+        }
+
+        .statek_mouseover {
+            background-color: green;
+        }
+
+        .statek_onboard {
+            background-color: yellow;
+        }
+
+        .statek_mouseoverr {
+            background-color: red;
+        }
+
+        .none {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="box1"></div>
+    <div id="box"></div>
+
+    <script src="statki.js"></script>
+</body>
+
+</html>
