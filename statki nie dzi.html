@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .kwadracik {
+            width: 30px;
+            height: 30px;
+            border: 0.2px solid black;
+            margin: 0.5px;
+            float: left;
+
+        }
+
+        .kwadracik:nth-child(10n+1) {
+            clear: both;
+        }
+
+        #box {
+            position: absolute;
+            left: 300px;
+            top: 50px;
+
+        }
+
+        #box1 {
+            max-width: 250px;
+            display: flex;
+            justify-content: flex-start;
+            flex-direction: column;
+        }
+
+        .statek {
+            width: 30px;
+            height: 30px;
+            border: 1px solid black;
+            margin: 1px;
+            float: left;
+        }
+
+        .statek_click {
+            background-color: blue !important;
+        }
+
+        .statek_mouseover {
+            background-color: green;
+        }
+
+        .statek_onboard {
+            background-color: yellow;
+        }
+
+        .none {
+            display: none;
+        }
+
+        .statek_mouseoverr {
+            background-color: red;
+        }
+
+        .dousuniecia {
+            width: 100%;
+            height: 100%;
+
+            margin: 0.5px;
+
+        }
+    </style>
+</head>
+
+<body>
+    <div id="box1"></div>
+    <div id="box"></div>
+
+    <script>
+        //http://wklejto.pl/915906
+        let statki = [4, 3, 3, 2, 2, 2, 1, 1, 1, 1]
+
+        let tablica = [];
+        let wym = 10
+        let uzycie = 0
+        let maszt = 0
+        let statekid;
+        let rotated = false;
+        document.getElementById("box").addEventListener("contextmenu", function (ev) {
+            ev.preventDefault()
+            rotated = !rotated
+
+
+        }, false)
+        for (let i = 0; i < wym; i++) {
+            tablica[i] = []
+            for (let x = 0; x < wym; x++) {
+                let divs = document.createElement("div");
+                divs.classList.add("kwadracik")
+                divs.id = i + "_" + x;
+                document.getElementById("box").appendChild(divs)
+                tablica[i][x] = 0;
+
+                divs.addEventListener("mouseenter", function () {
+
+                    divs.addEventListener("click", function () {
+                        let tablicab = document.getElementById("box").children
+                        for (let x = 0; x < tablicab.length; x++) {
+                            if (divs.id == tablicab[x].id) {
+
+                                if (tablicab[x].id.substring(2, 3) < 11 - maszt) {
+                                    for (let i = 0; i < tablicab.length; i++) {
+                                        let tak = true
+                                        for (let i = 0; i < maszt; i++) {
+                                            if (tablicab[x + i].classList.contains("statek_onboard")) {
+                                                tak = false
+                                            }
+                                        }
+                                        if (divs.classList.contains("statek_onboard") || tak == false || divs.classList.contains("statek_mouseoverr")) {
+
+                                        } else {
+
+                                            for (let i = 0; i < maszt; i++) {
+
+                                                if (tak) {
+                                                    tablicab[x + i].classList.add("statek_onboard")
+                                                }
+
+
+                                            }
+
+                                            let sz = document.getElementById("box1").children
+
+                                            for (let i = 0; i < sz.length; i++) {
+
+                                                if (sz[i].id == statekid) {
+                                                    sz[i].classList.add("none")
+                                                }
+
+                                            }
+                                            maszt = 0
+                                        }
+
+
+                                    }
+
+                                } else {
+                                    let miejsce = 9 - divs.id.substring(2, 3)
+
+                                    for (let i = 0; i < tablicab.length; i++) {
+                                        let tak = true
+                                        for (let i = (miejsce - maszt) + 1; i < miejsce + 1; i++) {
+                                            if (tablicab[x + i].classList.contains("statek_onboard")) {
+                                                tak = false
+                                            }
+                                        }
+                                        if (divs.classList.contains("statek_onboard") || tak == false || divs.classList.contains("statek_mouseoverr")) {
+
+                                        } else {
+
+                                            for (let i = (miejsce - maszt) + 1; i < miejsce + 1; i++) {
+
+                                                if (tak) {
+                                                    tablicab[x + i].classList.add("statek_onboard")
+                                                }
+
+
+                                            }
+
+                                            let sz = document.getElementById("box1").children
+
+                                            for (let i = 0; i < sz.length; i++) {
+
+                                                if (sz[i].id == statekid) {
+                                                    sz[i].classList.add("none")
+                                                }
+
+                                            }
+                                            maszt = 0
+                                        }
+
+
+                                    }
+                                }
+
+                            }
+
+                        }
+
+
+
+                    })
+
+
+
+                    let tablica = document.getElementById("box").children
+                    let pos = divs.id.split('_').map(x => parseInt(x))
+                    if (!rotated && pos[1] + maszt > 10) {
+                        pos[1] = 10 - maszt
+                    } else if (rotated && pos[0] + maszt > 10) {
+                        pos[0] = 10 - maszt
+
+                    }
+
+                    for (let i = 0; i < maszt; i++) {
+                        const prev = document.createElement('div')
+                        prev.classList.add("dousuniecia")
+                        prev.classList.add("statek_mouseover")
+                        document.getElementById(rotated ? `${pos[0] + i}_${pos[1]}` : `${pos[0]}_${pos[1] + i}`).appendChild(prev)
+                    }
+                })
+                divs.addEventListener('mouseleave', function () { //FIXME: napraaw to
+                    document.getElementById("box").querySelectorAll(".dousuniecia").innerHtml = ''
+                    document.querySelectorAll(".dousuniecia").forEach(element => {
+                        element.remove()
+                    });
+                    let pos = divs.id.split('_').map(x => parseInt(x))
+                    if (!rotated && pos[1] + maszt > 10) {
+                        pos[1] = 10 - maszt
+                    } else if (rotated && pos[0] + maszt > 10) {
+                        pos[0] = 10 - maszt
+
+                    }
+
+                    for (let i = 0; i < maszt; i++) {
+                        document.getElementById(rotated ? `${pos[0] + i}_${pos[1]}` : `${pos[0]}_${pos[1] + i}`).classList.remove("statek_mouseover")
+
+                    }
+                })
+
+            }
+        }
+
+        function Render_Tablicy() {
+            for (let i = 0; i < wym + 2; i++) {
+                for (let x = 0; x < wym + 2; x++) {
+                    document.getElementById(i + "_" + x).innerText = tablica[i][x]
+                }
+            }
+        }
+
+        function check_statek(positionx, positiony) {
+
+        }
+        function statek(wielkosc) {
+            uzycie += 1
+            let statek_box = document.createElement("div")
+            for (let i = 0; i < wielkosc; i++) {
+                statek_box.id = "statek_box" + uzycie
+                let statek = document.createElement("div")
+                statek.id = "statek" + uzycie
+                statek.classList.add("statek")
+                document.getElementById("box1").appendChild(statek_box)
+                document.getElementById("statek_box" + uzycie).appendChild(statek)
+                statek.addEventListener("click", function () {
+                    let x = document.getElementsByClassName("statek")
+                    maszt = 0
+                    for (let z = 0; z <= x.length - 1; z++) {
+                        x[z].classList.remove("statek_click")
+                    }
+                    for (let i = 0; i < statek_box.children.length; i++) {
+                        if (statek_box.children[i].classList.contains("statek_click")) {
+                            statek_box.children[i].classList.remove("statek_click")
+                        } else {
+                            statek_box.children[i].classList.add("statek_click")
+                            maszt++
+                        }
+                    }
+                    return statekid = statek_box.id
+                })
+                statek.addEventListener("mouseover", function () {
+                    for (let i = 0; i < statek_box.children.length; i++) {
+                        statek_box.children[i].classList.add("statek_mouseover")
+                    }
+
+                })
+                statek.addEventListener("mouseout", function () {
+                    for (let i = 0; i < statek_box.children.length; i++) {
+                        statek_box.children[i].classList.remove("statek_mouseover")
+                    }
+
+                })
+
+
+
+
+
+
+
+            }
+
+        }
+        function generuj_statki() {
+            for (let i = 0; i < statki.length; i++) {
+                statek(statki[i])
+
+            }
+        }
+
+        generuj_statki()
+
+
+
+
+    </script>
+</body>
+
+</html>
