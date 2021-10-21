@@ -224,8 +224,19 @@ function Render_Tablicy() {
             div.id = i + "-" + x;
             document.getElementById("box2").appendChild(div)
             div.addEventListener("click", function () {
+<<<<<<< Updated upstream
                 if (game_start_parametr) {
                     r_gracz(tablica_b1[i][x], div)
+=======
+
+                if (game_start_parametr) {
+                    if (r_gracza) {
+                        r_gracz(tablica_b1[i][x], div)
+                    } else {
+                        alert("teraz ruch komputera !")
+                    }
+
+>>>>>>> Stashed changes
                 } else {
                     alert("dodaj wszystkie statki !")
                 }
