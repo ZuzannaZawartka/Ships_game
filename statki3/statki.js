@@ -100,11 +100,15 @@ function draw_board() {
                             let start_button = document.createElement("div")
                             start_button.textContent = "Zacznij grę"
                             start_button.classList.add("button_start")
+                            document.getElementById("box3").innerHTML = ""
                             document.getElementById("box3").appendChild(start_button)
                             start_button.addEventListener("click", function () {
 
                                 start_button.classList.add("none")
                                 game_start_parametr = true
+
+
+
                             })
                         }
                         maszt = 0
@@ -222,21 +226,19 @@ function Render_Tablicy() {
             let div = document.createElement("div");
             div.classList.add("kwadracik")
             div.id = i + "-" + x;
+
             document.getElementById("box2").appendChild(div)
             div.addEventListener("click", function () {
-<<<<<<< Updated upstream
-                if (game_start_parametr) {
-                    r_gracz(tablica_b1[i][x], div)
-=======
 
                 if (game_start_parametr) {
                     if (r_gracza) {
                         r_gracz(tablica_b1[i][x], div)
-                    } else {
+                        r_komp(tablica)
+                    } else if (game_start_parametr && !r_gracza) {
                         alert("teraz ruch komputera !")
+
                     }
 
->>>>>>> Stashed changes
                 } else {
                     alert("dodaj wszystkie statki !")
                 }
@@ -359,6 +361,34 @@ function r_gracz(miejsce, div) {
         div.textContent = "·"
     }
     return r_gracza = false
+}
+
+function r_komp(miejsce) {
+    losmx = Math.floor(Math.random() * (10))
+    losmy = Math.floor(Math.random() * (10))
+
+    console.log(losmy, losmx)
+    if (miejsce[losmx][losmy] == 1) {
+        console.log("Gratulacje trafiles")
+
+
+
+        // let traf = document.getElementById("box").children
+
+        // for (let i = 0; i < traf.length; i++) {
+        //     if (traf[i].id.substring(0, 1) == losmx && traf[i].id.substring(2, 3) == losmy) {
+        //         traf[i].textContent("X")
+        //         console.log(traf[i])
+
+        //     }
+        // }
+
+    } else {
+        console.log("pudlo")
+
+    }
+    return r_gracza = true
+
 }
 
 
