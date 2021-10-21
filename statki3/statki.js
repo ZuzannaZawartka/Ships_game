@@ -4,6 +4,7 @@ let statki = [4, 3, 3, 2, 2, 2, 1, 1, 1, 1]
 let statekid;
 let rotated = false;
 let game_start_parametr = false;
+let r_gracza = true
 
 const tablica = JSON.parse(JSON.stringify(Array(10).fill(Array(10).fill(0))))
 
@@ -101,6 +102,8 @@ function draw_board() {
                             start_button.classList.add("button_start")
                             document.getElementById("box3").appendChild(start_button)
                             start_button.addEventListener("click", function () {
+
+                                start_button.classList.add("none")
                                 game_start_parametr = true
                             })
                         }
@@ -216,11 +219,19 @@ function Render_Tablicy() {
     for (let i = 1; i <= wym; i++) {
         for (let x = 1; x <= wym; x++) {
 
-            var div = document.createElement("div");
+            let div = document.createElement("div");
             div.classList.add("kwadracik")
             div.id = i + "-" + x;
             document.getElementById("box2").appendChild(div)
             div.addEventListener("click", function () {
+                if (game_start_parametr) {
+                    r_gracz(tablica_b1[i][x], div)
+                } else {
+                    alert("dodaj wszystkie statki !")
+                }
+
+
+
 
             })
 
@@ -327,6 +338,18 @@ function game_start() {
     }
     return true;
 }
+function r_gracz(miejsce, div) {
+
+    if (miejsce == 2) {
+        console.log("Gratulacje trafiles")
+        div.textContent = "X"
+    } else {
+        console.log("pudlo")
+        div.textContent = "·"
+    }
+    return r_gracza = false
+}
+
 
 function game() {
 
@@ -340,13 +363,13 @@ Render_Tablicy()
 
 
 
+losuj(4)
+losuj(3)
 losuj(3)
 losuj(2)
 losuj(2)
-losuj(2)
 losuj(1)
 losuj(1)
 losuj(1)
 losuj(1)
-losuj(4)
 console.log(tablica_b1)
