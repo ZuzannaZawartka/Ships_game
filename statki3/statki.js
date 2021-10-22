@@ -3,17 +3,18 @@ let maszt = 0
 let statki = [4, 3, 3, 2, 2, 2, 1, 1, 1, 1]
 let statekid;
 let rotated = false;
-let game_start_parametr = false;
+let game_start_parametr = true; // potem zmienic na false
 let r_gracza = true
 let tablica_strzalow_komputer = []
 let tablica_trafien_komputer = []
 let tablica_pudlo_komputer = []
-let tablica_strzalow_u = []
+//let tablica_strzalow_u = []
 let tablica_trafien_u = []
 let tablica_pudlo_u = []
 let bonus_u = false
 
 const tablica = JSON.parse(JSON.stringify(Array(10).fill(Array(10).fill(0))))
+const tablica_strzalow_u = JSON.parse(JSON.stringify(Array(12).fill(Array(12).fill(0))))
 
 function check(pos) {
     for (let i = -1; i < 2; i++) {
@@ -271,11 +272,12 @@ function Render_Tablicy() {
                         r_gracz(tablica_b1[i][x], div)
                         if(!r_gracza){
                             setTimeout(function(){ r_komp(tablica) }, 1000)
+                            
                         }
                         
                     } else if (game_start_parametr && !r_gracza) {
                         alert("teraz ruch komputera !")
-
+                        // bonusowy strzal dla komputera brak --
                     }
 
                 } else {
@@ -390,22 +392,43 @@ function game_start() {
     return true;
 }
 function r_gracz(miejsce, div) {
-    
-    
-    if (miejsce == 2) {
-        tablica_strzalow_u.push(div.id)
-        console.log("Gratulacje trafiles")
-        tablica_trafien_u.push(div.id)
-        div.textContent = "X"
-        return r_gracza = true 
-        
-    } else{
-        tablica_strzalow_u.push(div.id)
-        console.log("pudlo")
-        div.textContent = "o"
-        return r_gracza = false 
-       
+    let dana1
+    let dana2
+    if(div.id.length==5){
+        dana1 = div.id.substring(0,2)
+        dana2 = div.id.substring(3,5)
+    }else if(div.id.length ==4 && div.id.substring(0,2)=="10"){
+        dana1 = div.id.substring(0,2)
+        dana2 = div.id.substring(3,4)
+    }else if(div.id.length ==4 && div.id.substring(0,2)=="1-"){
+        dana1 = div.id.substring(0,1)
+        dana2 = div.id.substring(2,4)
+    }else{
+        dana1 = div.id.substring(0,1)
+        dana2 = div.id.substring(2,3)
     }
+    console.log(dana1,dana2)
+    if(tablica_strzalow_u[dana1][dana2] == 0){
+        if (miejsce == 2) {
+            tablica_strzalow_u[dana1][dana2] = 2
+            console.table(tablica_strzalow_u)
+            div.textContent = "X"
+            return r_gracza = true 
+            
+        } else{
+            tablica_strzalow_u[dana1][dana2] = 1
+           
+            div.textContent = "o"
+            return r_gracza = false 
+           
+        }
+    }else{
+       
+        
+        alert("juz strzelales tutaj")
+        return r_gracza = true
+    }
+
     
 }
 
