@@ -3,18 +3,15 @@ let maszt = 0
 let statki = [4, 3, 3, 2, 2, 2, 1, 1, 1, 1]
 let statekid;
 let rotated = false;
-let game_start_parametr = true; // potem zmienic na false
+let game_start_parametr = false; // potem zmienic na false
 let r_gracza = true
-let tablica_strzalow_komputer = []
-let tablica_trafien_komputer = []
-let tablica_pudlo_komputer = []
-//let tablica_strzalow_u = []
-let tablica_trafien_u = []
-let tablica_pudlo_u = []
+
 let bonus_u = false
 
+
 const tablica = JSON.parse(JSON.stringify(Array(10).fill(Array(10).fill(0))))
-const tablica_strzalow_u = JSON.parse(JSON.stringify(Array(12).fill(Array(12).fill(0))))
+const tablica_strzalow_u = JSON.parse(JSON.stringify(Array(11).fill(Array(11).fill(0))))
+const tablica_strzalow_komputer = JSON.parse(JSON.stringify(Array(10).fill(Array(10).fill(0))))
 
 function check(pos) {
     for (let i = -1; i < 2; i++) {
@@ -135,7 +132,8 @@ function draw_board() {
                         draw_board()
                     }
                 }else{
-                    alert("Nie ta plansza")
+                    alert("Nie ta plansza") /// prawy gorny rog wywoluje to 5 razy fixme!!!
+                    
                 }
                 })
             })
@@ -252,35 +250,30 @@ function Render_Tablicy() {
             document.getElementById("box2").appendChild(div)
             div.addEventListener("click", function () {
 
-                // if (game_start_parametr) {
-                //     if (r_gracza) {
-                //         r_gracz(tablica_b1[i][x], div)
-                      
-                //             setTimeout(function(){ r_komp(tablica) }, 1000)
-                    
-                //     } else if (game_start_parametr && !r_gracza) {
-                //         alert("teraz ruch komputera !")
-
-                //     }
-
-                // } else {
-                //     alert("dodaj wszystkie statki !")
-                // }
-
                 if (game_start_parametr) {
+                    let dziala = false
                     if (r_gracza) {
+                     
                         r_gracz(tablica_b1[i][x], div)
                         if(!r_gracza){
-                            setTimeout(function(){ r_komp(tablica) }, 1000)
-                            
+                         
+    
+                                    setTimeout(function(){ r_komp(tablica) }, 1000)
+
                         }
                         
-                    } else if (game_start_parametr && !r_gracza) {
+                    } else {
                         alert("teraz ruch komputera !")
+                        
+                       
+                    }}
+                       
+                       
+                       
                         // bonusowy strzal dla komputera brak --
-                    }
+                    
 
-                } else {
+                 else {
                     alert("dodaj wszystkie statki !")
                 }
 
@@ -306,7 +299,7 @@ function check_poziom(maszty) {
         dalej = true
         losx = Math.floor(Math.random() * ((11 - maszty) - 1)) + 1
         losy = Math.floor(Math.random() * (11 - 1) + 1)
-        console.log(losx, losy)
+       
 
         for (let i = 0; i < maszty; i++) {
             if (tablica_b1[losx + i][losy] == 0) {
@@ -327,7 +320,7 @@ function check_pion(maszty) {
         dalej = true
         losx = Math.floor(Math.random() * (11 - 1) + 1)
         losy = Math.floor(Math.random() * ((11 - maszty) - 1)) + 1
-        console.log(losx, losy)
+       
         for (let i = 0; i < maszty; i++) {
             if (tablica_b1[losx][losy + i] == 0) {
 
@@ -335,7 +328,7 @@ function check_pion(maszty) {
             else {
 
                 dalej = false;
-                console.log("ojc")
+                
 
             }
 
@@ -407,11 +400,9 @@ function r_gracz(miejsce, div) {
         dana1 = div.id.substring(0,1)
         dana2 = div.id.substring(2,3)
     }
-    console.log(dana1,dana2)
     if(tablica_strzalow_u[dana1][dana2] == 0){
         if (miejsce == 2) {
             tablica_strzalow_u[dana1][dana2] = 2
-            console.table(tablica_strzalow_u)
             div.textContent = "X"
             return r_gracza = true 
             
@@ -435,32 +426,33 @@ function r_gracz(miejsce, div) {
 function r_komp(miejsce) {
     losmx = Math.floor(Math.random() * (10))
     losmy = Math.floor(Math.random() * (10))
-    
-    console.log(losmy, losmx)
+   
+ 
+    if(tablica_strzalow_komputer[losmx][losmy] == 0){
     if (miejsce[losmx][losmy] == 1) {
         console.log("Gratulacje trafiles")
-        
-        tablica_trafien_komputer.push(`${losmx}_${losmy}`)
-
+        tablica_strzalow_komputer[losmx][losmy] = 2
         document.getElementById(`${losmx}_${losmy}`).classList.add("traf")
         document.getElementById(`${losmx}_${losmy}`).textContent = "X"
-      
+        return r_gracza = false
      
 
     } else {
         console.log("pudlo")
+        tablica_strzalow_komputer[losmx][losmy] = 1
         document.getElementById(`${losmx}_${losmy}`).classList.add("pudlo")
         document.getElementById(`${losmx}_${losmy}`).textContent = "o"
+        return r_gracza = true
 
+    }}else{
+        return r_gracza = false
     }
-    return r_gracza = true
+   
+    
 
 }
 
 
-function game() {
-
-}
 
 
 
