@@ -5,6 +5,8 @@ let statekid;
 let rotated = false;
 let game_start_parametr = false;
 let r_gracza = true
+let tablica_trafien = []
+let tablica_pudlo = []
 
 const tablica = JSON.parse(JSON.stringify(Array(10).fill(Array(10).fill(0))))
 
@@ -46,6 +48,7 @@ function draw_board() {
             div.classList.add("kwadracik")
             div.id = i + "_" + j
             if (tablica[i][j] == 1) div.classList.add("statek_onboard")
+          
             document.getElementById("box").appendChild(div)
             div.addEventListener("mouseover", function () {
                 const pos = [i, j]
@@ -68,7 +71,7 @@ function draw_board() {
 
 
                 div.addEventListener("click", function () {
-
+                    if(game_start_parametr == false){
                     const pos = [i, j]
                     if (!rotated && pos[1] + maszt > 10) {
                         pos[1] = 10 - maszt
@@ -97,11 +100,17 @@ function draw_board() {
                         }
 
                         if (game_start()) {
+                            
                             let start_button = document.createElement("div")
-                            start_button.textContent = "Zacznij grę"
-                            start_button.classList.add("button_start")
-                            document.getElementById("box3").innerHTML = ""
-                            document.getElementById("box3").appendChild(start_button)
+                            if(document.getElementById("box3").children.length == 0){
+                               
+                                start_button.textContent = "Zacznij grę"
+                                start_button.classList.add("button_start")
+                                document.getElementById("box3").innerHTML = ""
+                                document.getElementById("box3").appendChild(start_button)
+                            }
+                            
+                           
                             start_button.addEventListener("click", function () {
 
                                 start_button.classList.add("none")
@@ -116,12 +125,19 @@ function draw_board() {
                     }
 
 
-                    draw_board()
+                    if(game_start_parametr == false){
+                        draw_board()
+                    }
+                }else{
+                    alert("Nie ta plansza")
+                }
                 })
             })
             div.addEventListener("mouseout", function () {
 
-                draw_board()
+                if(game_start_parametr == false){
+                    draw_board()
+                }
             })
         }
     }
@@ -233,7 +249,7 @@ function Render_Tablicy() {
                 if (game_start_parametr) {
                     if (r_gracza) {
                         r_gracz(tablica_b1[i][x], div)
-                        r_komp(tablica)
+                        setTimeout(function(){ r_komp(tablica) }, 500)
                     } else if (game_start_parametr && !r_gracza) {
                         alert("teraz ruch komputera !")
 
@@ -358,7 +374,7 @@ function r_gracz(miejsce, div) {
         div.textContent = "X"
     } else {
         console.log("pudlo")
-        div.textContent = "·"
+        div.textContent = "o"
     }
     return r_gracza = false
 }
@@ -370,8 +386,11 @@ function r_komp(miejsce) {
     console.log(losmy, losmx)
     if (miejsce[losmx][losmy] == 1) {
         console.log("Gratulacje trafiles")
-
-
+        
+        tablica_trafien.push(`${losmx}_${losmy}`)
+        console.log(tablica_trafien)
+        document.getElementById(`${losmx}_${losmy}`).classList.add("traf")
+        document.getElementById(`${losmx}_${losmy}`).textContent = "X"
 
         // let traf = document.getElementById("box").children
 
@@ -385,6 +404,8 @@ function r_komp(miejsce) {
 
     } else {
         console.log("pudlo")
+        document.getElementById(`${losmx}_${losmy}`).classList.add("pudlo")
+        document.getElementById(`${losmx}_${losmy}`).textContent = "o"
 
     }
     return r_gracza = true
