@@ -5,8 +5,13 @@ let statekid;
 let rotated = false;
 let game_start_parametr = false;
 let r_gracza = true
-let tablica_trafien = []
-let tablica_pudlo = []
+let tablica_strzalow_komputer = []
+let tablica_trafien_komputer = []
+let tablica_pudlo_komputer = []
+let tablica_strzalow_u = []
+let tablica_trafien_u = []
+let tablica_pudlo_u = []
+let bonus_u = false
 
 const tablica = JSON.parse(JSON.stringify(Array(10).fill(Array(10).fill(0))))
 
@@ -246,10 +251,28 @@ function Render_Tablicy() {
             document.getElementById("box2").appendChild(div)
             div.addEventListener("click", function () {
 
+                // if (game_start_parametr) {
+                //     if (r_gracza) {
+                //         r_gracz(tablica_b1[i][x], div)
+                      
+                //             setTimeout(function(){ r_komp(tablica) }, 1000)
+                    
+                //     } else if (game_start_parametr && !r_gracza) {
+                //         alert("teraz ruch komputera !")
+
+                //     }
+
+                // } else {
+                //     alert("dodaj wszystkie statki !")
+                // }
+
                 if (game_start_parametr) {
                     if (r_gracza) {
                         r_gracz(tablica_b1[i][x], div)
-                        setTimeout(function(){ r_komp(tablica) }, 500)
+                        if(!r_gracza){
+                            setTimeout(function(){ r_komp(tablica) }, 1000)
+                        }
+                        
                     } else if (game_start_parametr && !r_gracza) {
                         alert("teraz ruch komputera !")
 
@@ -258,7 +281,6 @@ function Render_Tablicy() {
                 } else {
                     alert("dodaj wszystkie statki !")
                 }
-
 
 
 
@@ -330,11 +352,11 @@ function losuj(maszty) {
                     tablica_b1[losx + i][losy + g] = 1
                 }
             }
-            let dzieci = document.getElementById("box2").children
-            console.log(dzieci)
+         
+       
             for (let i = 0; i < maszty; i++) {
                 tablica_b1[losx + i][losy] = 2
-                console.log(tablica_b1[losx + i][losy])
+                
 
                 document.getElementById((losx + i) + "-" + losy).style.backgroundColor = "red"
 
@@ -368,39 +390,39 @@ function game_start() {
     return true;
 }
 function r_gracz(miejsce, div) {
-
+    
+    
     if (miejsce == 2) {
+        tablica_strzalow_u.push(div.id)
         console.log("Gratulacje trafiles")
+        tablica_trafien_u.push(div.id)
         div.textContent = "X"
-    } else {
+        return r_gracza = true 
+        
+    } else{
+        tablica_strzalow_u.push(div.id)
         console.log("pudlo")
         div.textContent = "o"
+        return r_gracza = false 
+       
     }
-    return r_gracza = false
+    
 }
 
 function r_komp(miejsce) {
     losmx = Math.floor(Math.random() * (10))
     losmy = Math.floor(Math.random() * (10))
-
+    
     console.log(losmy, losmx)
     if (miejsce[losmx][losmy] == 1) {
         console.log("Gratulacje trafiles")
         
-        tablica_trafien.push(`${losmx}_${losmy}`)
-        console.log(tablica_trafien)
+        tablica_trafien_komputer.push(`${losmx}_${losmy}`)
+
         document.getElementById(`${losmx}_${losmy}`).classList.add("traf")
         document.getElementById(`${losmx}_${losmy}`).textContent = "X"
-
-        // let traf = document.getElementById("box").children
-
-        // for (let i = 0; i < traf.length; i++) {
-        //     if (traf[i].id.substring(0, 1) == losmx && traf[i].id.substring(2, 3) == losmy) {
-        //         traf[i].textContent("X")
-        //         console.log(traf[i])
-
-        //     }
-        // }
+      
+     
 
     } else {
         console.log("pudlo")
@@ -434,4 +456,4 @@ losuj(1)
 losuj(1)
 losuj(1)
 losuj(1)
-console.log(tablica_b1)
+
