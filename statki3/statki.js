@@ -251,16 +251,33 @@ function Render_Tablicy() {
             div.addEventListener("click", function () {
 
                 if (game_start_parametr) {
-                    let dziala = false
+                   
                     if (r_gracza) {
-                     
+                        console.log(r_gracza)
                         r_gracz(tablica_b1[i][x], div)
-                        if(!r_gracza){
-                         
-    
-                                    setTimeout(function(){ r_komp(tablica) }, 1000)
+                        console.log(r_gracza)
+                       if(!r_gracza){
+                     
 
+                        var myfunc03 = function(tablica) {
+                            setTimeout(function(){ r_komp(tablica) }, 1000)
+                        };
+                        
+                        var myFunc01 = function() {
+                          myfunc03(tablica);
+                          
+                          setTimeout(function() {
+                            if (r_gracza == false) {
+                              myFunc01();
+                            }
+                          }, 1000);
                         }
+                        
+                        myFunc01();
+
+
+                    }
+                       
                         
                     } else {
                         alert("teraz ruch komputera !")
@@ -404,13 +421,13 @@ function r_gracz(miejsce, div) {
         if (miejsce == 2) {
             tablica_strzalow_u[dana1][dana2] = 2
             div.textContent = "X"
-            return r_gracza = true 
+            return r_gracza = true
             
         } else{
             tablica_strzalow_u[dana1][dana2] = 1
            
             div.textContent = "o"
-            return r_gracza = false 
+            return r_gracza = false
            
         }
     }else{
@@ -447,6 +464,9 @@ function r_komp(miejsce) {
     }}else{
         return r_gracza = false
     }
+        
+   
+    
    
     
 
