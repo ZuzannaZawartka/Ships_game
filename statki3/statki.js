@@ -1,9 +1,16 @@
+
+function game(){
+   document.getElementById("box").innerHTML = ""
+   document.getElementById("box1").innerHTML = ""
+   document.getElementById("box2").innerHTML = ""
+   document.getElementById("box3").innerHTML = ""
 let uzycie = 0
 let maszt = 0
 let statki = [4, 3, 3, 2, 2, 2, 1, 1, 1, 1]
 let statekid;
 let rotated = false;
-let game_start_parametr = true; // potem zmienic na false
+let game_start_parametr = false;
+let game_end_parametr = false; // potem zmienic na false
 let r_gracza = true
 
 /// zliczanie sumy zajetych pol przez statki
@@ -19,7 +26,9 @@ const tablica = JSON.parse(JSON.stringify(Array(10).fill(Array(10).fill(0))))
 const tablica_strzalow_u = JSON.parse(JSON.stringify(Array(11).fill(Array(11).fill(0))))
 const tablica_strzalow_komputer = JSON.parse(JSON.stringify(Array(10).fill(Array(10).fill(0))))
 let arr1d 
-let uu 
+let pkt_u
+let arr1d_2
+let pkt_komp 
 
 function check(pos) {
     for (let i = -1; i < 2; i++) {
@@ -257,12 +266,15 @@ function Render_Tablicy() {
 
             document.getElementById("box2").appendChild(div)
             div.addEventListener("click", function () {
-                console.log(tablica_strzalow_u)
-                if (game_start_parametr) {
+             
+             
+                if (game_start_parametr && !game_end_parametr ) {
+                
+                   
                     arr1d = [].concat.apply([],tablica_strzalow_u)
-                    uu =arr1d.filter( x=> x==2).length
-                    console.log(sum + "   "+ uu)
-                    if(sum != uu){
+                    pkt_u =arr1d.filter( x=> x==2).length
+                    arr1d_2 = [].concat.apply([],tablica_strzalow_komputer)
+                    pkt_komp =arr1d_2.filter( x=> x==2).length
                     
                     if (r_gracza) {
                         r_gracz(tablica_b1[i][x], div)
@@ -287,16 +299,37 @@ function Render_Tablicy() {
 
 
                     }
-                       
+          
+                       setTimeout(function(){
+                           if(sum==pkt_u || sum == pkt_komp){
+                               
+                               if(pkt_u > pkt_komp){
+                                alert("Koniec gry, Wygrałeś !")
+                              
+                                setTimeout(function(){game()},1200)
+                               }else{
+                                alert("Koniec gry, wygrał komputer :(")
+                           
+                                for(let k= 1 ; k < tablica_b1.length;k++){
+                                    for(let l= 1 ; l < tablica_b1.length;l++){
+                                        if(tablica_b1[k][l]==2){
+                                            document.getElementById(k + "-" + l).style.backgroundColor = "red"
+                                        }
+                                    }
+                                }
+                                setTimeout(function(){game()},1200)
+                               }
+                               game_start_parametr = false
+                               game_end_parametr = true
+                           }
+                        },50)
                         
                     } else {
                         alert("teraz ruch komputera !")
                         
                        
                     }
-                }else{
-                        alert("KONIEC GRY")
-                    }
+                
                 }
                        
                        
@@ -304,8 +337,10 @@ function Render_Tablicy() {
                         // bonusowy strzal dla komputera brak --
                     
 
-                 else {
+                 else if(!game_end_parametr) {
                     alert("dodaj wszystkie statki !")
+                }else{
+                    alert("Koniec gry nastapi restart")
                 }
 
 
@@ -432,13 +467,12 @@ function r_gracz(miejsce, div) {
         dana1 = div.id.substring(0,1)
         dana2 = div.id.substring(2,3)
     }
-    console.log(dana1+"__"+dana2)
+    
     if(tablica_strzalow_u[dana1][dana2] == 0){
         if (miejsce == 2) {
             tablica_strzalow_u[dana1][dana2] = 2
             div.textContent = "X"
-            arr1d = [].concat.apply([],tablica_strzalow_u)
-            uu =arr1d.filter( x=> x==2).length
+            
             return r_gracza = true
             
         } else{
@@ -511,3 +545,6 @@ losuj(1)
 losuj(1)
 losuj(1)
 
+}
+
+game()
