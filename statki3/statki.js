@@ -266,7 +266,7 @@ function Render_Tablicy() {
 
             document.getElementById("box2").appendChild(div)
             div.addEventListener("click", function () {
-             
+                console.log(tablica_b1)
              
                 if (game_start_parametr && !game_end_parametr ) {
                 
@@ -282,7 +282,7 @@ function Render_Tablicy() {
                      
 
                         var myfunc03 = function(tablica) {
-                            setTimeout(function(){ r_komp(tablica) }, 1000)
+                            setTimeout(function(){ r_komp(tablica) }, 500)
                         };
                         
                         var myFunc01 = function() {
@@ -317,7 +317,7 @@ function Render_Tablicy() {
                                         }
                                     }
                                 }
-                                setTimeout(function(){game()},1200)
+                                setTimeout(function(){game()},1500)
                                }
                                game_start_parametr = false
                                game_end_parametr = true
@@ -419,7 +419,7 @@ function losuj(maszty) {
                 tablica_b1[losx + i][losy] = 2
                 
 
-                document.getElementById((losx + i) + "-" + losy).style.backgroundColor = "red"
+                //document.getElementById((losx + i) + "-" + losy).style.backgroundColor = "red"
 
             }
         }
@@ -433,7 +433,7 @@ function losuj(maszty) {
             }
             for (let i = 0; i < maszty; i++) {
                 tablica_b1[losx][losy + i] = 2
-                document.getElementById(losx + "-" + (losy + i)).style.backgroundColor = "red"
+                //document.getElementById(losx + "-" + (losy + i)).style.backgroundColor = "red"
             }
         }
     }
