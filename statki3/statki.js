@@ -3,15 +3,23 @@ let maszt = 0
 let statki = [4, 3, 3, 2, 2, 2, 1, 1, 1, 1]
 let statekid;
 let rotated = false;
-let game_start_parametr = false; // potem zmienic na false
+let game_start_parametr = true; // potem zmienic na false
 let r_gracza = true
 
-let bonus_u = false
+/// zliczanie sumy zajetych pol przez statki
+let sum = -1;
+function summ(element){
+sum += element
+}
+statki.forEach(summ)
+
 
 
 const tablica = JSON.parse(JSON.stringify(Array(10).fill(Array(10).fill(0))))
 const tablica_strzalow_u = JSON.parse(JSON.stringify(Array(11).fill(Array(11).fill(0))))
 const tablica_strzalow_komputer = JSON.parse(JSON.stringify(Array(10).fill(Array(10).fill(0))))
+let arr1d 
+let uu 
 
 function check(pos) {
     for (let i = -1; i < 2; i++) {
@@ -249,13 +257,15 @@ function Render_Tablicy() {
 
             document.getElementById("box2").appendChild(div)
             div.addEventListener("click", function () {
-
+                console.log(tablica_strzalow_u)
                 if (game_start_parametr) {
-                   
+                    arr1d = [].concat.apply([],tablica_strzalow_u)
+                    uu =arr1d.filter( x=> x==2).length
+                    console.log(sum + "   "+ uu)
+                    if(sum != uu){
+                    
                     if (r_gracza) {
-                        console.log(r_gracza)
                         r_gracz(tablica_b1[i][x], div)
-                        console.log(r_gracza)
                        if(!r_gracza){
                      
 
@@ -283,7 +293,11 @@ function Render_Tablicy() {
                         alert("teraz ruch komputera !")
                         
                        
-                    }}
+                    }
+                }else{
+                        alert("KONIEC GRY")
+                    }
+                }
                        
                        
                        
@@ -404,23 +418,27 @@ function game_start() {
 function r_gracz(miejsce, div) {
     let dana1
     let dana2
+
     if(div.id.length==5){
         dana1 = div.id.substring(0,2)
         dana2 = div.id.substring(3,5)
     }else if(div.id.length ==4 && div.id.substring(0,2)=="10"){
         dana1 = div.id.substring(0,2)
         dana2 = div.id.substring(3,4)
-    }else if(div.id.length ==4 && div.id.substring(0,2)=="1-"){
+    }else if(div.id.length ==4 && div.id.substring(1,2)=="-"){
         dana1 = div.id.substring(0,1)
-        dana2 = div.id.substring(2,4)
+        dana2 = div.id.substring(2,5)
     }else{
         dana1 = div.id.substring(0,1)
         dana2 = div.id.substring(2,3)
     }
+    console.log(dana1+"__"+dana2)
     if(tablica_strzalow_u[dana1][dana2] == 0){
         if (miejsce == 2) {
             tablica_strzalow_u[dana1][dana2] = 2
             div.textContent = "X"
+            arr1d = [].concat.apply([],tablica_strzalow_u)
+            uu =arr1d.filter( x=> x==2).length
             return r_gracza = true
             
         } else{
@@ -485,6 +503,7 @@ Render_Tablicy()
 losuj(4)
 losuj(3)
 losuj(3)
+losuj(2)
 losuj(2)
 losuj(2)
 losuj(1)
