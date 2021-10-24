@@ -521,7 +521,7 @@ function r_komp(miejsce) {
 
     }
 
-},1)
+},1000)
 }else{
     console.log("powtorka")
 
