@@ -14,7 +14,7 @@ let game_end_parametr = false; // potem zmienic na false
 let r_gracza = true
 
 /// zliczanie sumy zajetych pol przez statki
-let sum = -1;
+let sum = 0;
 function summ(element){
 sum += element
 }
@@ -266,23 +266,44 @@ function Render_Tablicy() {
 
             document.getElementById("box2").appendChild(div)
             div.addEventListener("click", function () {
-                console.log(tablica_b1)
+               
              
                 if (game_start_parametr && !game_end_parametr ) {
                 
-                   
-                    arr1d = [].concat.apply([],tablica_strzalow_u)
-                    pkt_u =arr1d.filter( x=> x==2).length
-                    arr1d_2 = [].concat.apply([],tablica_strzalow_komputer)
-                    pkt_komp =arr1d_2.filter( x=> x==2).length
-                    
+                        // arr1d = [].concat.apply([],tablica_strzalow_u)
+                        // pkt_u =arr1d.filter( x=> x==2).length
+                        // arr1d_2 = [].concat.apply([],tablica_strzalow_komputer)
+                        // pkt_komp =arr1d_2.filter( x=> x==2).length
+                        // if(sum==pkt_u || sum == pkt_komp){
+                              
+                        //     if(pkt_u > pkt_komp){
+                        //      alert("Koniec gry, Wygrałeś !")
+                      
+                        //      setTimeout(function(){game()},2000)
+                        //     }else{
+                        //      alert("Koniec gry, wygrał komputer :(")
+                        
+                        //      for(let k= 1 ; k < tablica_b1.length;k++){
+                        //          for(let l= 1 ; l < tablica_b1.length;l++){
+                        //              if(tablica_b1[k][l]==2){
+                        //                  document.getElementById(k + "-" + l).style.backgroundColor = "red"
+                        //              }
+                        //          }
+                        //      }
+                        //      setTimeout(function(){game()},2000)
+                        //     }
+                        //     game_start_parametr = false
+                        //     game_end_parametr = true
+                        //     r_gracza = true
+                        // }
+              
                     if (r_gracza) {
                         r_gracz(tablica_b1[i][x], div)
                        if(!r_gracza){
-                     
+                   
 
                         var myfunc03 = function(tablica) {
-                            setTimeout(function(){ r_komp(tablica) }, 500)
+                            r_komp(tablica)
                         };
                         
                         var myFunc01 = function() {
@@ -296,33 +317,13 @@ function Render_Tablicy() {
                         }
                         
                         myFunc01();
-
+                  
 
                     }
           
-                       setTimeout(function(){
-                           if(sum==pkt_u || sum == pkt_komp){
-                               
-                               if(pkt_u > pkt_komp){
-                                alert("Koniec gry, Wygrałeś !")
-                              
-                                setTimeout(function(){game()},1200)
-                               }else{
-                                alert("Koniec gry, wygrał komputer :(")
-                           
-                                for(let k= 1 ; k < tablica_b1.length;k++){
-                                    for(let l= 1 ; l < tablica_b1.length;l++){
-                                        if(tablica_b1[k][l]==2){
-                                            document.getElementById(k + "-" + l).style.backgroundColor = "red"
-                                        }
-                                    }
-                                }
-                                setTimeout(function(){game()},1500)
-                               }
-                               game_start_parametr = false
-                               game_end_parametr = true
-                           }
-                        },50)
+                       
+                        
+                       
                         
                     } else {
                         alert("teraz ruch komputera !")
@@ -473,7 +474,10 @@ function r_gracz(miejsce, div) {
             tablica_strzalow_u[dana1][dana2] = 2
             div.textContent = "X"
             
+                
+            czy_wyg()
             return r_gracza = true
+
             
         } else{
             tablica_strzalow_u[dana1][dana2] = 1
@@ -498,11 +502,13 @@ function r_komp(miejsce) {
    
  
     if(tablica_strzalow_komputer[losmx][losmy] == 0){
+        setTimeout(function(){
     if (miejsce[losmx][losmy] == 1) {
         console.log("Gratulacje trafiles")
         tablica_strzalow_komputer[losmx][losmy] = 2
         document.getElementById(`${losmx}_${losmy}`).classList.add("traf")
         document.getElementById(`${losmx}_${losmy}`).textContent = "X"
+        czy_wyg()
         return r_gracza = false
      
 
@@ -513,7 +519,10 @@ function r_komp(miejsce) {
         document.getElementById(`${losmx}_${losmy}`).textContent = "o"
         return r_gracza = true
 
-    }}else{
+    }
+
+},1000)
+}else{
         return r_gracza = false
     }
         
@@ -524,7 +533,40 @@ function r_komp(miejsce) {
 
 }
 
-
+function czy_wyg(){
+    arr1d = [].concat.apply([],tablica_strzalow_u)
+    pkt_u =arr1d.filter( x=> x==2).length
+    arr1d_2 = [].concat.apply([],tablica_strzalow_komputer)
+    pkt_komp =arr1d_2.filter( x=> x==2).length
+    if(sum==pkt_u || sum == pkt_komp){
+          
+        if(pkt_u > pkt_komp){
+         alert("Koniec gry, Wygrałeś !")
+         for(let k= 1 ; k < tablica_b1.length;k++){
+            for(let l= 1 ; l < tablica_b1.length;l++){
+                if(tablica_b1[k][l]==2){
+                    document.getElementById(k + "-" + l).style.backgroundColor = "red"
+                }
+            }
+        }
+         setTimeout(function(){game()},2000)
+        }else{
+         alert("Koniec gry, wygrał komputer :(")
+    
+         for(let k= 1 ; k < tablica_b1.length;k++){
+             for(let l= 1 ; l < tablica_b1.length;l++){
+                 if(tablica_b1[k][l]==2){
+                     document.getElementById(k + "-" + l).style.backgroundColor = "red"
+                 }
+             }
+         }
+         setTimeout(function(){game()},2000)
+        }
+        game_start_parametr = false
+        game_end_parametr = true
+        r_gracza = true
+    }
+}
 
 
 
