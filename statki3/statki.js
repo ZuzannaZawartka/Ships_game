@@ -521,9 +521,11 @@ function r_komp(miejsce) {
 
     }
 
-},1000)
+},1)
 }else{
-        return r_gracza = false
+    console.log("powtorka")
+
+       r_komp(miejsce)
     }
         
    
